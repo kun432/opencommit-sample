@@ -12,3 +12,7 @@
 
 - MIT
 
+## Thanks
+
+- OpenCommit
+
