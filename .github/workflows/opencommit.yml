@@ -1,0 +1,40 @@
+name: 'OpenCommit Action'
+
+on:
+  push:
+    # 無視するブランチを列挙する
+    # 通常はこのブランチのリストで十分だが、必要なら他のブランチも追加する
+    branches-ignore: [main master dev development release]
+
+jobs:
+  opencommit:
+    timeout-minutes: 10
+    name: OpenCommit
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: di-sukharev/opencommit@github-action-v1.0.4
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        env:
+          # OpenAI APIキーをレポジトリのactionsのsecretに設定しておく
+          # OpenAI APIーの取得: https://platform.openai.com/account/api-keys
+          # レポジトリのsecretの設定: <レポジトリURL>/settings/secrets/actions
+          OCO_OPENAI_API_KEY: ${{ secrets.OCO_OPENAI_API_KEY }}
+
+          # 好みに合わせてカスタマイズ
+          OCO_OPENAI_MAX_TOKENS: 3000
+          OCO_OPENAI_BASE_PATH: ''
+          OCO_DESCRIPTION: true
+          OCO_EMOJI: true
+          OCO_MODEL: gpt-3.5-turbo
+          OCO_LANGUAGE: ja
+          OCO_PROMPT_MODULE: conventional-commit

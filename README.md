@@ -8,3 +8,7 @@
 
 - kun432
 
+##  License
+
+- MIT
+
